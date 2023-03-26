@@ -12,8 +12,15 @@ const path = require('path');
 // sécuriser notre application de certaines vulnérabilités 
 const helmet = require("helmet");
 const session = require('cookie-session');
+// 'dotenv' est utilisé afin de masquer les informations de connexion 
+//à la base de données à l'aide de variables d'environnement
+//require('dotenv').config();
+
+
+
 // cela ne fonctione pas const nocache = require('nocache');
-// Middleware CORS / Header pour contourner les erreurs en débloquant certains systèmes de sécurité CORS, afin que tout le monde puisse faire des requetes depuis son navigateur
+// Middleware CORS / Middleware générale 
+//Header pour contourner les erreurs en débloquant certains systèmes de sécurité CORS, afin que tout le monde puisse faire des requetes depuis son navigateur
 app.use((req, res, next) => {
   // ressources partagées depuis n'importe quelle origine
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,7 +28,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
   //les méthodes autorisées pour les requêtes HTTP
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  next();
+  next();// passer l'excution au middleware d'apres 
 });
 
 const mongoose = require('mongoose');
@@ -37,7 +44,10 @@ app.use(bodyParser.json());
 app.use(helmet());
 
 const user = require('./routes/user');
+app.use("/api/auth", user);
 
-// gestion des API ( les principeaux chemins )
+// gestion des API ( les principeaux chemins ) / Rendre le dossier "images" statique
 app.use('/images', express.static(path.join(__dirname,'image')));
+
+
 module.exports= app;

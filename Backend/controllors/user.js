@@ -45,6 +45,7 @@ exports.login = (req, res, next) => {
   // On doit trouver l'utilisateur dans la BDD qui correspond à l'adresse entrée par l'utilisateur
   User.findOne({
       email: req.body.email
+
     })
     .then(user => {
       // Si on trouve pas l'utilisateur on va renvoyer un code 401 "non autorisé"
@@ -83,10 +84,10 @@ exports.login = (req, res, next) => {
           });
         })
         .catch(error => res.status(500).json({
-          error
+          error: "The error is :" + error
         }));
     })
     .catch(error => res.status(500).json({
-      error
+      error: "The error is :" + error
     }));
 };
