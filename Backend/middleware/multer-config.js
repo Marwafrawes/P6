@@ -6,7 +6,9 @@ const MIME_TYPES = {
     'image/jpeg': 'jpg',
     'image/png': 'png'
   };
-
+  function removeExtension(filename) {
+    return filename.substring(0, filename.lastIndexOf('.')) || filename;
+  }
   /* Gestion des fichiers entrants dans les requêtes HTTP */
 const storage = multer.diskStorage({
     // // On appelle le callback
@@ -16,8 +18,7 @@ const storage = multer.diskStorage({
     filename: (req, file, callback) => {
       const name = file.originalname.split(' ').join('_');
       const extension = MIME_TYPES[file.mimetype];
-      callback(null, name + Date.now() + '.' + extension);//on passe null pour dire qu'il n'y a pas d'erreur
+      callback(null, removeExtension(name) + Date.now() + '.' + extension);//on passe null pour dire qu'il n'y a pas d'erreur
     }
   });
-  
   module.exports = multer({storage: storage}).single('image');

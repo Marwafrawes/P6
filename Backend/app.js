@@ -12,6 +12,7 @@ const path = require('path');
 // sécuriser notre application de certaines vulnérabilités 
 const helmet = require("helmet");
 const session = require('cookie-session');
+const cors = require("cors");
 // 'dotenv' est utilisé afin de masquer les informations de connexion 
 //à la base de données à l'aide de variables d'environnement
 //require('dotenv').config();
@@ -30,6 +31,10 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();// passer l'excution au middleware d'apres 
 });
+const corsOptions = {
+  origin: process.env.DOMAIN || "http://localhost:4200",
+};
+app.use(cors(corsOptions));
 
 const mongoose = require('mongoose');
 const exp = require('constants');
@@ -41,13 +46,17 @@ mongoose.connect('mongodb+srv://Marwa:Marwafrawes123@marwa.ehyvjxd.mongodb.net/m
   .catch(() => console.log('Connexion à MongoDB échouée !')); 
 
 app.use(bodyParser.json());
-app.use(helmet());
-
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}));
+//declaration des routes
 const user = require('./routes/user');
+const sauce = require('./routes/sauce');
 app.use("/api/auth", user);
+app.use("/api/sauces", sauce)
 
 // gestion des API ( les principeaux chemins ) / Rendre le dossier "images" statique
-app.use('/images', express.static(path.join(__dirname,'image')));
+app.use('/images', express.static(path.join(__dirname,'images')));
 
 
 module.exports= app;
