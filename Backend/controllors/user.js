@@ -74,13 +74,10 @@ exports.login = (req, res, next) => {
               }, // Encodage de l'userdID nécéssaire dans le cas où une requête transmettrait un userId (ex: modification d'une sauce)
               'RANDOM_TOKEN_SECRET', // Nous utilisons une chaîne secrète de développement temporaire RANDOM_SECRET_KEY pour crypter notre token (à remplacer par une chaîne aléatoire beaucoup plus longue pour la production).
               // Nous définissons la durée de validité du token à 24 heures.
-              // L'utilisateur devra donc se reconnecter au bout de 24 heures.
               {
                 expiresIn: '24h'
               }
             )
-            // On encode le userID pour la création de nouveaux objets, et cela permet d'appliquer le bon userID
-            // aux objets et ne pas modifier les objets des autres
           });
         })
         .catch(error => res.status(500).json({

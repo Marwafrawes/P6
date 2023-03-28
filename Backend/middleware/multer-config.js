@@ -9,7 +9,7 @@ const MIME_TYPES = {
   function removeExtension(filename) {
     return filename.substring(0, filename.lastIndexOf('.')) || filename;
   }
-  /* Gestion des fichiers entrants dans les requêtes HTTP */
+  //Gestion des fichiers entrants dans les requêtes HTTP 
 const storage = multer.diskStorage({
     // // On appelle le callback
     destination: (req, file, callback) => {
